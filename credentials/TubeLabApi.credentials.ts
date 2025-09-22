@@ -4,6 +4,7 @@ import {
 	ICredentialType,
 	INodeProperties,
 } from 'n8n-workflow';
+import { API_BASE_URL } from '../nodes/TubeLab/consts';
 
 export class TubeLabApi implements ICredentialType {
 	name = 'tubeLabApi';
@@ -28,7 +29,7 @@ export class TubeLabApi implements ICredentialType {
 	};
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://public-api.tubelab.net',
+			baseURL: API_BASE_URL,
 			url: '/v1/channels',
 			headers: {
 				Authorization: '={{"Api-Key " + $credentials.apiKey}}',
