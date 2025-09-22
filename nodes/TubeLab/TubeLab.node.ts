@@ -158,10 +158,10 @@ export class TubeLab implements INodeType {
 			{
 				displayName: 'Started At',
 				name: 'publishedAtFrom',
-				type: 'multiOptions',
+				type: 'options',
 				description:
 					"Filter by a channel's last parsed video upload date (from a sample of 100 videos)",
-				default: [],
+				default: '',
 				options: [
 					{
 						name: 'All Time',
@@ -169,11 +169,11 @@ export class TubeLab implements INodeType {
 					},
 					{
 						name: 'Last 3 Months',
-						value: '={{new Date(Date.now() - 3 * 30 * 24 * 60 * 60 * 1000)}}',
+						value: '={{new Date(Date.now() - 3 * 30 * 24 * 60 * 60 * 1000).toISOString()}}',
 					},
 					{
 						name: 'Last 6 Months',
-						value: '={{new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000)}}',
+						value: '={{new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000).toISOString()}}',
 					},
 					{
 						name: 'Last Month',
@@ -191,10 +191,10 @@ export class TubeLab implements INodeType {
 					},
 				},
 				routing: {
-					send: {
-						type: 'query',
-						property: 'publishedAtFrom',
-						value: '={{ $value }}',
+					request: {
+						qs: {
+							publishedAtFrom: '={{ $value }}',
+						},
 					},
 				},
 			},
