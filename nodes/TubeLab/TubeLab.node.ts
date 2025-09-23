@@ -2,6 +2,7 @@ import { INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { API_BASE_URL } from './consts';
 import { sharedFields } from './SharedProperties';
 import { getChannelsFields } from './ChannelsDescription';
+import { paginate } from './utils';
 
 export class TubeLab implements INodeType {
 	description: INodeTypeDescription = {
@@ -66,6 +67,12 @@ export class TubeLab implements INodeType {
 								method: 'GET',
 								url: '/v1/channels',
 							},
+							send: {
+								paginate: true,
+							},
+							operations: {
+								pagination: paginate,
+							},
 						},
 					},
 					{
@@ -90,6 +97,12 @@ export class TubeLab implements INodeType {
 							request: {
 								method: 'GET',
 								url: '/v1/outliers',
+							},
+							send: {
+								paginate: true,
+							},
+							operations: {
+								pagination: paginate,
 							},
 						},
 					},

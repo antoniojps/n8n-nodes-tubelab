@@ -140,18 +140,18 @@ export const getChannelsFields: INodeProperties[] = [
 					{
 						name: 'High Quality',
 						value: 'positive',
+						description:
+							'Original channels with good packaging or uploading content with more effort',
 					},
 					{
 						name: 'General',
 						value: 'neutral',
+						description: 'Generic content, neither good or bad',
 					},
 					{
-						name: 'Slop',
+						name: 'Low Quality',
 						value: 'negative',
-					},
-					{
-						name: 'More Shorts Than Videos',
-						value: 'short-form',
+						description: 'AI Slop, kids content, bushcraft, compilations, etc',
 					},
 				],
 			},

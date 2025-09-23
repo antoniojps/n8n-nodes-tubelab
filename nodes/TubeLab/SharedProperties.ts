@@ -24,4 +24,21 @@ export const sharedFields: INodeProperties[] = [
 			},
 		},
 	},
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		typeOptions: {
+			minValue: 1,
+		},
+		// overriden as api default is 20 and max is 40 per page
+		// eslint-disable-next-line n8n-nodes-base/node-param-default-wrong-for-limit
+		default: 20,
+		description: 'Max number of results to return',
+		displayOptions: {
+			show: {
+				operation: ['getChannels', 'getOutliers'],
+			},
+		},
+	},
 ];
