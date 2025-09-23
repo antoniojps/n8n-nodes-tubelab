@@ -6,8 +6,12 @@ export const sharedFields: INodeProperties[] = [
 		name: 'query',
 		type: 'string',
 		description: 'The search terms to query (comma-separated for multiple queries)',
-		default: '',
-		placeholder: 'Minecraft, Fortnite, etc',
+		default: [],
+		placeholder: 'Search a niche, concept or keyword...',
+		typeOptions: {
+			multipleValues: true,
+			maxValue: 10,
+		},
 		displayOptions: {
 			show: {
 				operation: ['getChannels', 'getOutliers'],
@@ -16,8 +20,7 @@ export const sharedFields: INodeProperties[] = [
 		routing: {
 			send: {
 				type: 'query',
-				property: 'query', // Use array notation
-				value: '={{ $value.split(",").map(item => item.trim()) }}',
+				property: 'query',
 			},
 		},
 	},

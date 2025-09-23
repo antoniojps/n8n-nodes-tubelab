@@ -13,6 +13,47 @@ export const getChannelsFields: INodeProperties[] = [
 		},
 		options: [
 			{
+				displayName: 'Average Video Duration',
+				name: 'avgDuration',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1,
+						to: undefined,
+					},
+				},
+				description: 'Filter avg. video duration (in minutes).',
+				options: [
+					{
+						name: 'options',
+						displayName: 'Average Video Duration',
+						values: [
+							{
+								displayName: 'From (Minutes)',
+								name: 'from',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 1,
+									numberPrecision: 0,
+								},
+							},
+							{
+								displayName: 'To (Minutes)',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 2,
+									numberPrecision: 0,
+								},
+							},
+						],
+					},
+				],
+			},
+
+			{
 				displayName: 'Average Views',
 				name: 'avgViews',
 				type: 'fixedCollection',
@@ -89,6 +130,39 @@ export const getChannelsFields: INodeProperties[] = [
 				],
 			},
 			{
+				displayName: 'Content Quality (AI Classification)',
+				name: 'classificationQuality',
+				type: 'options',
+				description: 'Content quality classification. Useful to filter out low quality channels.',
+				placeholder: '',
+				default: 'neutral',
+				options: [
+					{
+						name: 'High Quality',
+						value: 'positive',
+					},
+					{
+						name: 'General',
+						value: 'neutral',
+					},
+					{
+						name: 'Slop',
+						value: 'negative',
+					},
+					{
+						name: 'More Shorts Than Videos',
+						value: 'short-form',
+					},
+				],
+			},
+			{
+				displayName: 'Faceless (AI Classification)',
+				name: 'classificationIsFaceless',
+				type: 'boolean',
+				default: true,
+				description: 'Whether channel content has faceless potential or not',
+			},
+			{
 				displayName: 'Filter By',
 				name: 'filterBy',
 				type: 'options',
@@ -156,6 +230,93 @@ export const getChannelsFields: INodeProperties[] = [
 								default: undefined,
 								typeOptions: {
 									minValue: 1000,
+									numberPrecision: 0,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				displayName: 'Monetization (Adsense)',
+				name: 'monetizationAdsense',
+				type: 'boolean',
+				default: true,
+				description: 'Whether the channel has AdSense enabled or not',
+			},
+			{
+				displayName: 'Revenue Monthly Estimation',
+				name: 'revenueMonthlyEstimation',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1,
+						to: undefined,
+					},
+				},
+				description: 'Filter by monthly revenue estimations',
+				options: [
+					{
+						name: 'options',
+						displayName: 'Revenue Monthly Estimation',
+						values: [
+							{
+								displayName: 'From',
+								name: 'from',
+								type: 'number',
+								default: 1,
+								typeOptions: {
+									minValue: 1,
+									numberPrecision: 0,
+								},
+							},
+							{
+								displayName: 'To',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 100,
+									numberPrecision: 0,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				displayName: 'RPM Estimation',
+				name: 'rpmEstimation',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1,
+						to: undefined,
+					},
+				},
+				description: 'Filter by RPM estimations',
+				options: [
+					{
+						name: 'options',
+						displayName: 'RPM Estimation',
+						values: [
+							{
+								displayName: 'From',
+								name: 'from',
+								type: 'number',
+								default: 1,
+								typeOptions: {
+									minValue: 0,
+									numberPrecision: 0,
+								},
+							},
+							{
+								displayName: 'To',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 2,
 									numberPrecision: 0,
 								},
 							},
@@ -293,6 +454,19 @@ export const getChannelsFields: INodeProperties[] = [
 					videosCountTo: '={{ $parameter.filters?.videosCount?.options?.to }}',
 					avgViewsToSubscribersRatioFrom:
 						'={{ $parameter.filters?.avgViewsToSubscribersRatioFrom }}',
+					revenueMonthlyEstimationFrom:
+						'={{ $parameter.filters?.revenueMonthlyEstimation?.options?.from }}',
+					revenueMonthlyEstimationTo:
+						'={{ $parameter.filters?.revenueMonthlyEstimation?.options?.to }}',
+					rpmEstimationFrom: '={{ $parameter.filters?.rpmEstimation?.options?.from }}',
+					rpmEstimationTo: '={{ $parameter.filters?.rpmEstimation?.options?.to }}',
+					avgDurationFrom:
+						'={{ $parameter.filters?.avgDuration?.options?.from ? $parameter.filters?.avgDuration?.options?.from * 60 : undefined }}',
+					avgDurationTo:
+						'={{ $parameter.filters?.avgDuration?.options?.to ? $parameter.filters?.avgDuration?.options?.to * 60 : undefined }}',
+					monetizationAdsense: '={{ $parameter.filters?.monetizationAdsense }}',
+					classificationQuality: '={{ $parameter.filters?.classificationQuality }}',
+					classificationIsFaceless: '={{ $parameter.filters?.classificationIsFaceless }}',
 				},
 			},
 		},
