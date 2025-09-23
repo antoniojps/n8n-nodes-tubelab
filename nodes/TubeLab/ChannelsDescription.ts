@@ -156,6 +156,17 @@ export const getChannelsFields: INodeProperties[] = [
 				],
 			},
 			{
+				displayName: 'Exclude Niches',
+				name: 'excludeNiche',
+				type: 'string',
+				description: 'Exclude niches from search results by category',
+				default: [],
+				typeOptions: {
+					multipleValues: true,
+					maxValue: 20,
+				},
+			},
+			{
 				displayName: 'Faceless (AI Classification)',
 				name: 'classificationIsFaceless',
 				type: 'boolean',
@@ -467,6 +478,7 @@ export const getChannelsFields: INodeProperties[] = [
 					monetizationAdsense: '={{ $parameter.filters?.monetizationAdsense }}',
 					classificationQuality: '={{ $parameter.filters?.classificationQuality }}',
 					classificationIsFaceless: '={{ $parameter.filters?.classificationIsFaceless }}',
+					excludeNiche: '={{ $parameter.filters?.excludeNiche }}',
 				},
 			},
 		},

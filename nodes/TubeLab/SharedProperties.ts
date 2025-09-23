@@ -7,7 +7,7 @@ export const sharedFields: INodeProperties[] = [
 		type: 'string',
 		description: 'The search terms to query (comma-separated for multiple queries)',
 		default: [],
-		placeholder: 'Search a niche, concept or keyword...',
+		placeholder: 'Add search terms',
 		typeOptions: {
 			multipleValues: true,
 			maxValue: 10,
