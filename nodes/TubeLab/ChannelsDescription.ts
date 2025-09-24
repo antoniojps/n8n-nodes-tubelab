@@ -1,6 +1,7 @@
 import type { INodeProperties } from 'n8n-workflow';
 import languages from './languages.json';
 import { fromField } from './SharedProperties';
+import { validateAndCompileRelatedChannelIds } from './utils';
 
 export const getChannelsSortFields: INodeProperties[] = [
 	{
@@ -72,6 +73,35 @@ export const getChannelsSortFields: INodeProperties[] = [
 	},
 ];
 
+export const getChannelsRelatedSearchFields: INodeProperties[] = [
+	{
+		displayName: 'Related Channel IDs',
+		name: 'relatedChannelId',
+		type: 'string',
+		description: 'The IDs of the channels to search for related channels',
+		default: [],
+		placeholder: 'UChn5jutPQB_bRjnG80pzl5w',
+		typeOptions: {
+			multipleValues: true,
+			minValue: 1,
+			maxValue: 10,
+		},
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['getChannelsRelated'],
+			},
+		},
+		routing: {
+			send: {
+				type: 'query',
+				property: 'relatedChannelId',
+				preSend: [validateAndCompileRelatedChannelIds],
+			},
+		},
+	},
+];
+
 export const getChannelsFields: INodeProperties[] = [
 	{
 		displayName: 'Filters',
@@ -123,7 +153,6 @@ export const getChannelsFields: INodeProperties[] = [
 					},
 				],
 			},
-
 			{
 				displayName: 'Average Views',
 				name: 'avgViews',
@@ -557,7 +586,7 @@ export const getChannelsFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['getChannels'],
+				operation: ['getChannels', 'getChannelsRelated'],
 			},
 		},
 	},

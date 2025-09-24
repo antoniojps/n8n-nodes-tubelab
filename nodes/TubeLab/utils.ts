@@ -1,82 +1,28 @@
-import {
-	DeclarativeRestApiSettings,
-	IExecutePaginationFunctions,
-	INodeExecutionData,
-} from 'n8n-workflow';
+import { IExecuteSingleFunctions, IHttpRequestOptions, NodeOperationError } from 'n8n-workflow';
 
-export async function paginate(
-	this: IExecutePaginationFunctions,
-	requestOptions: DeclarativeRestApiSettings.ResultOptions,
-): Promise<INodeExecutionData[]> {
-	if (!requestOptions.options.qs) requestOptions.options.qs = {};
+export const YOUTUBE_CHANNEL_ID = /^[A-Za-z0-9_-]{24}$/;
 
-	const executions: INodeExecutionData[] = [];
-	const requestedLimit = this.getNodeParameter('limit', 50) as number;
-	// Hard cap at 1000 results for safety
-	const limit = Math.min(requestedLimit, 1000);
-	// Use API's max page size for efficiency
-	const pageSize = 40;
-	let currentPage = 0;
+function validateChannelIds(channelIds: string[]): { valid: string[]; invalid: string[] } {
+	return {
+		valid: channelIds.filter((id) => YOUTUBE_CHANNEL_ID.test(id)),
+		invalid: channelIds.filter((id) => !YOUTUBE_CHANNEL_ID.test(id)),
+	};
+}
 
-	while (executions.length < limit) {
-		// Calculate how many items we still need
-		const remainingItems = limit - executions.length;
-		const requestSize = Math.min(pageSize, remainingItems);
+export async function validateAndCompileRelatedChannelIds(
+	this: IExecuteSingleFunctions,
+	requestOptions: IHttpRequestOptions,
+): Promise<IHttpRequestOptions> {
+	const channelIds = this.getNodeParameter('relatedChannelId') as string[];
+	const { invalid } = validateChannelIds(channelIds);
 
-		// Set page number and size
-		requestOptions.options.qs.from = currentPage;
-		requestOptions.options.qs.size = requestSize;
-
-		const responseData = await this.makeRoutingRequest(requestOptions);
-
-		if (!responseData || responseData.length === 0) {
-			// No response, break
-			break;
-		}
-
-		// Extract results from response
-		const results = responseData[0].json;
-		let newItems: any[] = [];
-
-		if (results && Array.isArray(results.hits)) {
-			newItems = results.hits;
-		}
-
-		if (newItems.length === 0) {
-			// No more items available, break
-			break;
-		}
-
-		// Add items up to the remaining limit
-		const itemsToAdd = newItems.slice(0, remainingItems);
-		executions.push(...itemsToAdd.map((item: any) => ({ json: item })));
-
-		// Check if we have pagination info to make better decisions
-		const pagination = results.pagination as any;
-		if (pagination && typeof pagination === 'object') {
-			// If we got fewer items than requested, we've reached the end
-			if (newItems.length < requestSize) {
-				break;
-			}
-
-			// If we've reached the total available items
-			if (
-				typeof pagination.from === 'number' &&
-				typeof pagination.size === 'number' &&
-				typeof pagination.total === 'number' &&
-				pagination.from + pagination.size >= pagination.total
-			) {
-				break;
-			}
-		} else {
-			// Fallback: If we got fewer items than requested, we've reached the end
-			if (newItems.length < requestSize) {
-				break;
-			}
-		}
-
-		currentPage++;
+	if (invalid.length > 0) {
+		throw new NodeOperationError(
+			this.getNode(),
+			'Invalid channel IDs found.Please adjust the "Related Channel IDs" parameter and try again. Invalid channel IDs: ' +
+				invalid.join(', '),
+		);
 	}
 
-	return executions;
+	return requestOptions;
 }

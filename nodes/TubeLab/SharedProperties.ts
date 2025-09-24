@@ -14,7 +14,7 @@ export const searchFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				resource: ['channel', 'outlier'],
+				operation: ['getChannels', 'getOutliers'],
 			},
 		},
 		routing: {

@@ -1,7 +1,11 @@
 import { INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { API_BASE_URL } from './consts';
 import { postReceivePaginationFields, searchFields, sizeFields } from './SharedProperties';
-import { getChannelsFields, getChannelsSortFields } from './ChannelsDescription';
+import {
+	getChannelsFields,
+	getChannelsRelatedSearchFields,
+	getChannelsSortFields,
+} from './ChannelsDescription';
 
 export class TubeLab implements INodeType {
 	description: INodeTypeDescription = {
@@ -139,6 +143,7 @@ export class TubeLab implements INodeType {
 				default: 'getChannels',
 			},
 			...searchFields,
+			...getChannelsRelatedSearchFields,
 			...sizeFields,
 			...getChannelsFields,
 			...getChannelsSortFields,
