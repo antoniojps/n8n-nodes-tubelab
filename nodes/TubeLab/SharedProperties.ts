@@ -1,6 +1,6 @@
-import type { INodeProperties } from 'n8n-workflow';
+import type { INodeProperties, PostReceiveAction } from 'n8n-workflow';
 
-export const sharedFields: INodeProperties[] = [
+export const searchFields: INodeProperties[] = [
 	{
 		displayName: 'Query',
 		name: 'query',
@@ -14,7 +14,7 @@ export const sharedFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['getChannels', 'getOutliers'],
+				resource: ['channel', 'outlier'],
 			},
 		},
 		routing: {
@@ -24,21 +24,52 @@ export const sharedFields: INodeProperties[] = [
 			},
 		},
 	},
+];
+
+export const sizeFields: INodeProperties[] = [
 	{
-		displayName: 'Limit',
-		name: 'limit',
+		displayName: 'Size',
+		name: 'size',
 		type: 'number',
 		typeOptions: {
 			minValue: 1,
+			maxValue: 40,
 		},
-		// overriden as api default is 20 and max is 40 per page
-		// eslint-disable-next-line n8n-nodes-base/node-param-default-wrong-for-limit
 		default: 20,
-		description: 'Max number of results to return',
+		description:
+			'Number of results to return. Must be between 1 and 40. Combine with `from` to paginate search results.',
 		displayOptions: {
 			show: {
-				operation: ['getChannels', 'getOutliers'],
+				resource: ['channel', 'outlier'],
 			},
+		},
+		routing: {
+			send: {
+				type: 'query',
+				property: 'size',
+			},
+		},
+	},
+];
+
+export const fromField: INodeProperties = {
+	displayName: 'From',
+	name: 'from',
+	type: 'number',
+	typeOptions: {
+		minValue: 1,
+		maxValue: 100,
+	},
+	default: 1,
+	description:
+		'The result page to fetch. The default is 1. Combine this parameter with `size` to paginate search results.',
+};
+
+export const postReceivePaginationFields: PostReceiveAction[] = [
+	{
+		type: 'rootProperty',
+		properties: {
+			property: 'hits',
 		},
 	},
 ];

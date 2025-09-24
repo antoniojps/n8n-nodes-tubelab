@@ -1,8 +1,7 @@
 import { INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { API_BASE_URL } from './consts';
-import { sharedFields } from './SharedProperties';
-import { getChannelsFields } from './ChannelsDescription';
-import { paginate } from './utils';
+import { postReceivePaginationFields, searchFields, sizeFields } from './SharedProperties';
+import { getChannelsFields, getChannelsSortFields } from './ChannelsDescription';
 
 export class TubeLab implements INodeType {
 	description: INodeTypeDescription = {
@@ -39,11 +38,15 @@ export class TubeLab implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'TubeLab',
-						value: 'tubelab',
+						name: 'Channel',
+						value: 'channel',
+					},
+					{
+						name: 'Outlier',
+						value: 'outlier',
 					},
 				],
-				default: 'tubelab',
+				default: 'channel',
 			},
 			{
 				displayName: 'Operation',
@@ -52,45 +55,14 @@ export class TubeLab implements INodeType {
 				noDataExpression: true,
 				displayOptions: {
 					show: {
-						resource: ['tubelab'],
+						resource: ['outlier'],
 					},
 				},
 				options: [
 					{
-						name: 'Channels',
-						value: 'getChannels',
-						action: 'Search channels',
-						description:
-							'Search for channels directly from the YouTube Niche Finder with AI enhanced data and 30+ filters. Updated in real-time, 24/7.',
-						routing: {
-							request: {
-								method: 'GET',
-								url: '/v1/channels',
-							},
-							send: {
-								paginate: true,
-							},
-							operations: {
-								pagination: paginate,
-							},
-						},
-					},
-					{
-						name: 'Similar Channels',
-						value: 'getChannelsRelated',
-						action: 'Search similar channels',
-						description: 'Search for YouTube channels with related content to another channel',
-						routing: {
-							request: {
-								method: 'GET',
-								url: '/v1/channels/related',
-							},
-						},
-					},
-					{
-						name: 'Outliers',
+						name: 'Search',
 						value: 'getOutliers',
-						action: 'Search outliers',
+						action: 'Search for outliers',
 						description:
 							'Search for videos directly from the YouTube Outliers Finder library with AI enhanced data and 30+ filters. Updated in real-time, 24/7.',
 						routing: {
@@ -98,31 +70,78 @@ export class TubeLab implements INodeType {
 								method: 'GET',
 								url: '/v1/outliers',
 							},
-							send: {
-								paginate: true,
-							},
-							operations: {
-								pagination: paginate,
+							output: {
+								postReceive: postReceivePaginationFields,
 							},
 						},
 					},
 					{
-						name: 'Similar Outliers',
+						name: 'Similar Search',
 						value: 'getOutliersRelated',
-						action: 'Search similar outliers',
+						action: 'Search for similar outliers',
 						description: 'Search for YouTube outliers with related content to another outlier(s)',
 						routing: {
 							request: {
 								method: 'GET',
 								url: '/v1/outliers/related',
 							},
+							output: {
+								postReceive: postReceivePaginationFields,
+							},
+						},
+					},
+				],
+				default: 'getOutliers',
+			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['channel'],
+					},
+				},
+				options: [
+					{
+						name: 'Search',
+						value: 'getChannels',
+						action: 'Search for channels',
+						description:
+							'Search for channels directly from the YouTube Niche Finder with AI enhanced data and 30+ filters. Updated in real-time, 24/7.',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '/v1/channels',
+							},
+							output: {
+								postReceive: postReceivePaginationFields,
+							},
+						},
+					},
+					{
+						name: 'Similar Search',
+						value: 'getChannelsRelated',
+						action: 'Search for similar channels',
+						description: 'Search for YouTube channels with related content to another channel',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '/v1/channels/related',
+							},
+							output: {
+								postReceive: postReceivePaginationFields,
+							},
 						},
 					},
 				],
 				default: 'getChannels',
 			},
-			...sharedFields,
+			...searchFields,
+			...sizeFields,
 			...getChannelsFields,
+			...getChannelsSortFields,
 		],
 	};
 }

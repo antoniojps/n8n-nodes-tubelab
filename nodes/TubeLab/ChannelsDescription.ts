@@ -1,5 +1,76 @@
 import type { INodeProperties } from 'n8n-workflow';
 import languages from './languages.json';
+import { fromField } from './SharedProperties';
+
+export const getChannelsSortFields: INodeProperties[] = [
+	{
+		displayName: 'Sort By',
+		name: 'sort',
+		type: 'options',
+		default: 'relevance',
+		description:
+			'Sort results by a specific metric. When using semantic search, sorting is only applied within the nearest videos found and not the entire dataset.',
+		options: [
+			{
+				name: 'Average Views',
+				value: 'averageViews',
+				description: 'Sort by the average number of views across all videos',
+			},
+			{
+				name: 'Average Views to Subscribers Ratio',
+				value: 'avgViewsToSubscribersRatio',
+				description: 'Sort by the ratio of average views to subscriber count (engagement metric)',
+			},
+			{
+				name: 'Found At',
+				value: 'foundAt',
+				description: 'Sort by when the channel was discovered and added to the database',
+			},
+			{
+				name: 'Recency',
+				value: 'recency',
+				description: 'Sort by when the channel started uploading content',
+			},
+			{
+				name: 'Relevance',
+				value: 'relevance',
+				description: 'Sort by relevance to search query (default for semantic searches)',
+			},
+			{
+				name: 'Revenue Monthly (Estimation)',
+				value: 'revenueMonthly',
+				description: 'Sort by estimated monthly revenue from AdSense',
+			},
+			{
+				name: 'RPM (Estimation)',
+				value: 'rpm',
+				description: 'Sort by estimated Revenue Per Mille (revenue per 1000 views)',
+			},
+			{
+				name: 'Subscribers',
+				value: 'subscribers',
+				description: 'Sort by total number of channel subscribers',
+			},
+			{
+				name: 'View Variation Coefficient',
+				value: 'viewVariationCoefficient',
+				description: 'Sort by consistency of view counts (lower = more consistent performance)',
+			},
+		],
+		routing: {
+			request: {
+				qs: {
+					sortBy: '={{ $value == "relevance" ? undefined : $value }}',
+				},
+			},
+		},
+		displayOptions: {
+			show: {
+				operation: ['getChannels'],
+			},
+		},
+	},
+];
 
 export const getChannelsFields: INodeProperties[] = [
 	{
@@ -190,6 +261,7 @@ export const getChannelsFields: INodeProperties[] = [
 					},
 				],
 			},
+			fromField,
 			{
 				displayName: 'Language',
 				name: 'language',
@@ -479,6 +551,7 @@ export const getChannelsFields: INodeProperties[] = [
 					classificationQuality: '={{ $parameter.filters?.classificationQuality }}',
 					classificationIsFaceless: '={{ $parameter.filters?.classificationIsFaceless }}',
 					excludeNiche: '={{ $parameter.filters?.excludeNiche }}',
+					from: '={{ $parameter.filters?.from }}',
 				},
 			},
 		},
