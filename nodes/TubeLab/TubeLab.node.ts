@@ -6,6 +6,11 @@ import {
 	getChannelsRelatedSearchFields,
 	getChannelsSortFields,
 } from './ChannelsDescription';
+import {
+	getOutliersFields,
+	getOutliersRelatedSearchFields,
+	getOutliersSortFields,
+} from './OutliersDescription';
 
 export class TubeLab implements INodeType {
 	description: INodeTypeDescription = {
@@ -68,7 +73,7 @@ export class TubeLab implements INodeType {
 						value: 'getOutliers',
 						action: 'Search for outliers',
 						description:
-							'Search for videos directly from the YouTube Outliers Finder library with AI enhanced data and 30+ filters. Updated in real-time, 24/7.',
+							'Search for videos directly from the TubeLab Outliers library with AI enhanced data and 30+ filters. Updated in real-time, 24/7.',
 						routing: {
 							request: {
 								method: 'GET',
@@ -144,9 +149,12 @@ export class TubeLab implements INodeType {
 			},
 			...searchFields,
 			...getChannelsRelatedSearchFields,
+			...getOutliersRelatedSearchFields,
 			...sizeFields,
 			...getChannelsFields,
 			...getChannelsSortFields,
+			...getOutliersFields,
+			...getOutliersSortFields,
 		],
 	};
 }
