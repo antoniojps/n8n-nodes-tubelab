@@ -13,7 +13,7 @@ export const getOutliersSortFields: INodeProperties[] = [
 			'Sort results by a specific metric. When using semantic search (applying a query with the by parameter set to semantic) the sorting option is only applied within the nearest videos found and not the entire dataset.',
 		options: [
 			{
-				name: 'Average Views Ratio',
+				name: 'Outlier Score',
 				value: 'averageViewsRatio',
 				description: 'Sort by average views ratio',
 			},
@@ -28,12 +28,12 @@ export const getOutliersSortFields: INodeProperties[] = [
 				description: 'Sort by relevance to search query (default for semantic searches)',
 			},
 			{
-				name: 'Revenue (Estimation)',
+				name: 'Revenue',
 				value: 'revenue',
 				description: 'Sort by revenue estimation',
 			},
 			{
-				name: 'RPM (Estimation)',
+				name: 'RPM',
 				value: 'rpm',
 				description: 'Sort by RPM estimation',
 			},
@@ -65,7 +65,7 @@ export const getOutliersSortFields: INodeProperties[] = [
 
 export const getOutliersRelatedSearchFields: INodeProperties[] = [
 	{
-		displayName: 'Related Search',
+		displayName: 'Similar By',
 		name: 'relatedSearch',
 		type: 'collection',
 		placeholder: 'Add search criteria',
@@ -79,7 +79,7 @@ export const getOutliersRelatedSearchFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Video IDs',
+				displayName: 'Videos',
 				name: 'videoId',
 				type: 'string',
 				description: 'YouTube video IDs to search for related content (max 10)',
@@ -92,7 +92,7 @@ export const getOutliersRelatedSearchFields: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Thumbnail Video ID',
+				displayName: 'Thumbnail',
 				name: 'thumbnailVideoId',
 				type: 'string',
 				description: 'Search by thumbnail similarity to this video ID',
@@ -100,7 +100,7 @@ export const getOutliersRelatedSearchFields: INodeProperties[] = [
 				placeholder: 'dQw4w9WgXcQ',
 			},
 			{
-				displayName: 'Related Channel IDs',
+				displayName: 'Channels',
 				name: 'relatedChannelId',
 				type: 'string',
 				description: 'Search by related channel videos (max 2 channel IDs)',
@@ -145,6 +145,64 @@ export const getOutliersFields: INodeProperties[] = [
 		},
 		options: [
 			{
+				displayName: 'Average Views Ratio',
+				name: 'averageViewsRatio',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1,
+						to: undefined,
+					},
+				},
+				description: 'Filter by average views ratio (outlier score) ranges',
+				options: [
+					{
+						name: 'options',
+						displayName: 'Average Views Ratio',
+						values: [
+							{
+								displayName: 'From',
+								name: 'from',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 0,
+									numberPrecision: 0,
+								},
+							},
+							{
+								displayName: 'To',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 2,
+									numberPrecision: 0,
+								},
+							},
+						],
+					},
+				],
+			},
+
+			{
+				displayName: 'Content Kind (Type)',
+				name: 'type',
+				type: 'options',
+				description: 'Wether you want to search videos or shorts',
+				default: 'video',
+				options: [
+					{
+						name: 'Video',
+						value: 'video',
+					},
+					{
+						name: 'Short',
+						value: 'short',
+					},
+				],
+			},
+			{
 				displayName: 'Content Quality (AI Classification)',
 				name: 'classificationQuality',
 				type: 'options',
@@ -171,6 +229,46 @@ export const getOutliersFields: INodeProperties[] = [
 				],
 			},
 			{
+				displayName: 'Duration',
+				name: 'duration',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1,
+						to: undefined,
+					},
+				},
+				description: 'Filter by video duration (in minutes)',
+				options: [
+					{
+						name: 'options',
+						displayName: 'Duration',
+						values: [
+							{
+								displayName: 'From (Minutes)',
+								name: 'from',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 1,
+									numberPrecision: 0,
+								},
+							},
+							{
+								displayName: 'To (Minutes)',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 2,
+									numberPrecision: 0,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
 				displayName: 'Exclude Keywords',
 				name: 'excludeKeyword',
 				type: 'string',
@@ -180,6 +278,13 @@ export const getOutliersFields: INodeProperties[] = [
 					multipleValues: true,
 					maxValue: 20,
 				},
+			},
+			{
+				displayName: 'Faceless (AI)',
+				name: 'classificationIsFaceless',
+				type: 'boolean',
+				default: true,
+				description: 'Whether the channel has faceless potential or not',
 			},
 			fromField,
 			{
@@ -202,10 +307,58 @@ export const getOutliersFields: INodeProperties[] = [
 			},
 			{
 				displayName: 'Monetization (Adsense)',
-				name: 'monetizationAdsense',
+				name: 'channelMonetizationAdsense',
 				type: 'boolean',
 				default: true,
 				description: 'Whether the channel has AdSense enabled or not',
+			},
+			{
+				displayName: 'Reference ID (Scan)',
+				name: 'referenceId',
+				type: 'string',
+				default: '',
+				description:
+					'The reference ID to use for the search. This is used to filter the results by a specific scan.',
+			},
+			{
+				displayName: 'Revenue Estimation',
+				name: 'revenueEstimation',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1,
+						to: undefined,
+					},
+				},
+				description: 'Filter by revenue estimations',
+				options: [
+					{
+						name: 'options',
+						displayName: 'Revenue Estimation',
+						values: [
+							{
+								displayName: 'From',
+								name: 'from',
+								type: 'number',
+								default: 1,
+								typeOptions: {
+									minValue: 0,
+									numberPrecision: 0,
+								},
+							},
+							{
+								displayName: 'To',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 10,
+									numberPrecision: 0,
+								},
+							},
+						],
+					},
+				],
 			},
 			{
 				displayName: 'RPM Estimation',
@@ -247,18 +400,177 @@ export const getOutliersFields: INodeProperties[] = [
 					},
 				],
 			},
+			{
+				displayName: 'Search By',
+				name: 'by',
+				type: 'options',
+				description: 'Search by semantics (meaning of words) or lexical (exact words)',
+				placeholder: '',
+				default: 'semantic',
+				options: [
+					{
+						name: 'Semantic',
+						value: 'semantic',
+						description: 'Meaning of words',
+					},
+					{
+						name: 'Lexical',
+						value: 'lexical',
+						description: 'Exact word matches',
+					},
+				],
+			},
+			{
+				displayName: 'Subscribers',
+				name: 'subscribersCount',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1,
+						to: undefined,
+					},
+				},
+				description: 'Filter by channel subscribers range',
+				options: [
+					{
+						name: 'options',
+						displayName: 'Subscribers',
+						values: [
+							{
+								displayName: 'From',
+								name: 'from',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 1,
+									numberPrecision: 0,
+								},
+							},
+							{
+								displayName: 'To',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 200,
+									numberPrecision: 0,
+								},
+							},
+						],
+					},
+				],
+			},
+
+			{
+				displayName: 'Views',
+				name: 'viewCount',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1000,
+						to: undefined,
+					},
+				},
+				description: 'Filter by view count ranges',
+				options: [
+					{
+						name: 'options',
+						displayName: 'Views',
+						values: [
+							{
+								displayName: 'From',
+								name: 'from',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 1000,
+									numberPrecision: 0,
+								},
+							},
+							{
+								displayName: 'To',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 5000,
+									numberPrecision: 0,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				displayName: 'Z-Score (Mathematical Outlier Score)',
+				name: 'zScore',
+				type: 'fixedCollection',
+				default: {
+					options: {
+						from: 1,
+						to: undefined,
+					},
+				},
+				description: 'Filter by z-score (mathematical outlier score) ranges',
+				options: [
+					{
+						name: 'options',
+						displayName: 'Z-Score',
+						values: [
+							{
+								displayName: 'From',
+								name: 'from',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 1,
+									numberPrecision: 1,
+								},
+							},
+							{
+								displayName: 'To',
+								name: 'to',
+								type: 'number',
+								default: undefined,
+								typeOptions: {
+									minValue: 2,
+									numberPrecision: 1,
+								},
+							},
+						],
+					},
+				],
+			},
 		],
 		routing: {
 			request: {
 				qs: {
+					averageViewsRatioFrom: '={{ $parameter.filters?.averageViewsRatio?.options?.from }}',
+					averageViewsRatioTo: '={{ $parameter.filters?.averageViewsRatio?.options?.to }}',
 					language: '={{ $parameter.filters?.language }}',
 					publishedAtFrom:
 						'={{ $parameter.filters?.publishedAtFrom === "3months" ? new Date(Date.now() - 3 * 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "6months" ? new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "1month" ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "1year" ? new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000).toISOString() : undefined }}',
 					rpmEstimationFrom: '={{ $parameter.filters?.rpmEstimation?.options?.from }}',
 					rpmEstimationTo: '={{ $parameter.filters?.rpmEstimation?.options?.to }}',
+					revenueEstimationFrom: '={{ $parameter.filters?.revenueEstimation?.options?.from }}',
+					revenueEstimationTo: '={{ $parameter.filters?.revenueEstimation?.options?.to }}',
 					classificationQuality: '={{ $parameter.filters?.classificationQuality }}',
 					excludeKeyword: '={{ $parameter.filters?.excludeKeyword }}',
 					from: '={{ $parameter.filters?.from }}',
+					viewCountFrom: '={{ $parameter.filters?.viewCount?.options?.from }}',
+					viewCountTo: '={{ $parameter.filters?.viewCount?.options?.to }}',
+					zScoreFrom: '={{ $parameter.filters?.zScore?.options?.from }}',
+					zScoreTo: '={{ $parameter.filters?.zScore?.options?.to }}',
+					type: '={{ $parameter.filters?.type }}',
+					durationFrom:
+						'={{ $parameter.filters?.duration?.options?.from ? $parameter.filters?.duration?.options?.from * 60 : undefined }}',
+					durationTo:
+						'={{ $parameter.filters?.duration?.options?.to ? $parameter.filters?.duration?.options?.to * 60 : undefined }}',
+					subscribersCountFrom: '={{ $parameter.filters?.subscribersCount?.options?.from }}',
+					subscribersCountTo: '={{ $parameter.filters?.subscribersCount?.options?.to }}',
+					channelMonetizationAdsense: '={{ $parameter.filters?.channelMonetizationAdsense }}',
+					referenceId: '={{ $parameter.filters?.referenceId }}',
+					classificationIsFaceless: '={{ $parameter.filters?.classificationIsFaceless }}',
 				},
 			},
 		},
