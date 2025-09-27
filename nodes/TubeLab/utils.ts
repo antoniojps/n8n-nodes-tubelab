@@ -1,4 +1,14 @@
-import { IExecuteSingleFunctions, IHttpRequestOptions, NodeOperationError } from 'n8n-workflow';
+import {
+	IDataObject,
+	IExecuteFunctions,
+	IExecuteSingleFunctions,
+	IHookFunctions,
+	IHttpRequestMethods,
+	ILoadOptionsFunctions,
+	IHttpRequestOptions,
+	NodeOperationError,
+} from 'n8n-workflow';
+import { API_BASE_URL } from './consts';
 
 export const YOUTUBE_CHANNEL_ID = /^[A-Za-z0-9_-]{24}$/;
 export const YOUTUBE_VIDEO_ID = /^[a-zA-Z0-9-_]{11}$/;
@@ -130,4 +140,30 @@ export async function validateAndCompileRelatedSearchCollection(
 	}
 
 	return requestOptions;
+}
+
+/**
+ * Make an API request to TubeLab
+ *
+ */
+export async function tubeLabApiRequest(
+	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
+	method: IHttpRequestMethods,
+	endpoint: string,
+	body: IDataObject,
+	query?: IDataObject,
+) {
+	const options = {
+		method,
+		body,
+		qs: query,
+		url: `${API_BASE_URL}/v1/${endpoint}`,
+		json: true,
+	} satisfies IHttpRequestOptions;
+
+	if (options.qs && Object.keys(options.qs).length === 0) {
+		delete options.qs;
+	}
+
+	return await this.helpers.requestWithAuthentication.call(this, 'tubeLabApi', options);
 }
