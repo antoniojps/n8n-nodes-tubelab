@@ -1,16 +1,18 @@
 import { INodeType, INodeTypeDescription } from 'n8n-workflow';
-import { API_BASE_URL } from './consts';
-import { postReceivePaginationFields, searchFields, sizeFields } from './SharedProperties';
+import { API_BASE_URL } from './utils';
 import {
+	postReceivePaginationFields,
+	searchFields,
+	sizeFields,
 	getChannelsFields,
 	getChannelsRelatedSearchFields,
 	getChannelsSortFields,
-} from './ChannelsDescription';
-import {
 	getOutliersFields,
 	getOutliersRelatedSearchFields,
 	getOutliersSortFields,
-} from './OutliersDescription';
+	getScanFields,
+	postScanFields,
+} from './descriptions';
 
 export class TubeLab implements INodeType {
 	description: INodeTypeDescription = {
@@ -53,6 +55,10 @@ export class TubeLab implements INodeType {
 					{
 						name: 'Outlier',
 						value: 'outlier',
+					},
+					{
+						name: 'Scan',
+						value: 'scan',
 					},
 				],
 				default: 'channel',
@@ -147,6 +153,45 @@ export class TubeLab implements INodeType {
 				],
 				default: 'getChannels',
 			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['scan'],
+					},
+				},
+				options: [
+					{
+						name: 'Start a Scan',
+						value: 'postScan',
+						action: 'Start a scan',
+						description:
+							'Start a TubeLab scan to search for fresh outliers and channels on any given topic',
+						routing: {
+							request: {
+								method: 'POST',
+								url: '/v1/scan',
+							},
+						},
+					},
+					{
+						name: 'Get Scan',
+						value: 'getScan',
+						action: 'Get a scan',
+						description: 'Get the status of a scan and used inputs',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '=/v1/scan/{{$parameter["id"]}}',
+							},
+						},
+					},
+				],
+				default: 'postScan',
+			},
 			...searchFields,
 			...getChannelsRelatedSearchFields,
 			...getOutliersRelatedSearchFields,
@@ -155,6 +200,8 @@ export class TubeLab implements INodeType {
 			...getChannelsSortFields,
 			...getOutliersFields,
 			...getOutliersSortFields,
+			...getScanFields,
+			...postScanFields,
 		],
 	};
 }

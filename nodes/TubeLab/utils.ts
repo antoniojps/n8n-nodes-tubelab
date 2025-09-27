@@ -8,8 +8,8 @@ import {
 	IHttpRequestOptions,
 	NodeOperationError,
 } from 'n8n-workflow';
-import { API_BASE_URL } from './consts';
 
+export const API_BASE_URL = 'https://public-api.staging.tubelab.net';
 export const YOUTUBE_CHANNEL_ID = /^[A-Za-z0-9_-]{24}$/;
 export const YOUTUBE_VIDEO_ID = /^[a-zA-Z0-9-_]{11}$/;
 
@@ -137,6 +137,24 @@ export async function validateAndCompileRelatedSearchCollection(
 					invalidChannelIds.join(', '),
 			);
 		}
+	}
+
+	return requestOptions;
+}
+
+export async function validateAndCompileScanChannelIds(
+	this: IExecuteSingleFunctions,
+	requestOptions: IHttpRequestOptions,
+): Promise<IHttpRequestOptions> {
+	const channelIds = this.getNodeParameter('channelIds') as string[];
+	const { invalid } = validateChannelIds(channelIds);
+
+	if (invalid.length > 0) {
+		throw new NodeOperationError(
+			this.getNode(),
+			'Invalid channel IDs found. Please provide valid YouTube channel IDs (24 characters). Invalid channel IDs: ' +
+				invalid.join(', '),
+		);
 	}
 
 	return requestOptions;

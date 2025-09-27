@@ -1,7 +1,7 @@
 import type { INodeProperties } from 'n8n-workflow';
 import languages from './languages.json';
-import { fromField } from './SharedProperties';
-import { validateAndCompileRelatedChannelIds } from './utils';
+import { fromField } from './SharedDescription';
+import { validateAndCompileRelatedChannelIds } from '../utils';
 
 export const getChannelsSortFields: INodeProperties[] = [
 	{

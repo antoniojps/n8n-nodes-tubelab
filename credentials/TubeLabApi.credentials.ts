@@ -4,7 +4,7 @@ import {
 	ICredentialType,
 	INodeProperties,
 } from 'n8n-workflow';
-import { API_BASE_URL } from '../nodes/TubeLab/consts';
+import { API_BASE_URL } from '../nodes/TubeLab/utils';
 
 export class TubeLabApi implements ICredentialType {
 	name = 'tubeLabApi';

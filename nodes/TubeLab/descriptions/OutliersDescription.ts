@@ -1,7 +1,7 @@
 import type { INodeProperties } from 'n8n-workflow';
 import languages from './languages.json';
-import { fromField } from './SharedProperties';
-import { validateAndCompileRelatedSearchCollection } from './utils';
+import { fromField } from './SharedDescription';
+import { validateAndCompileRelatedSearchCollection } from '../utils';
 
 export const getOutliersSortFields: INodeProperties[] = [
 	{
