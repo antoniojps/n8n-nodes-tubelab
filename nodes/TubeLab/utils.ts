@@ -175,7 +175,7 @@ export async function tubeLabApiRequest(
 		method,
 		body,
 		qs: query,
-		url: `${API_BASE_URL}/v1/${endpoint}`,
+		url: `${API_BASE_URL}/v1${endpoint}`,
 		json: true,
 	} satisfies IHttpRequestOptions;
 
