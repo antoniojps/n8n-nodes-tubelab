@@ -1,0 +1,25 @@
+{
+	"node": "n8n-nodes-base.stripeTrigger",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Marketing"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://tubelab.net/docs/api/introduction#authentication"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://tubelab.net/docs/api/webhooks"
+			}
+		],
+		"generic": [
+			{
+				"label": "Automate your YouTube research & ideation with TubeLab",
+				"icon": "🚀",
+				"url": "https://tubelab.net/docs/api/automation"
+			}
+		]
+	}
+}

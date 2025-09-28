@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-base.TubeLab",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Miscellaneous"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://tubelab.net/docs/api/introduction#authentication"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://tubelab.net/docs/api"
+			}
+		]
+	}
+}
