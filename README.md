@@ -64,3 +64,4 @@ Please refer to [TubeLab's Automation documentation](https://tubelab.net/docs/ap
 ## Version history
 
 - 0.1.0 - Initial release
+- 0.1.1 - Fix package.json metadata details
