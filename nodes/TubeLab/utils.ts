@@ -9,7 +9,7 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 
-export const API_BASE_URL = 'https://public-api.staging.tubelab.net';
+export const API_BASE_URL = 'https://public-api.tubelab.net';
 export const YOUTUBE_CHANNEL_ID = /^[A-Za-z0-9_-]{24}$/;
 export const YOUTUBE_VIDEO_ID = /^[a-zA-Z0-9-_]{11}$/;
 
