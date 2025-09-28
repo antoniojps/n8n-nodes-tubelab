@@ -1,20 +1,20 @@
 {
 	"name": "n8n-nodes-tubelab",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "n8n node to call TubeLab's API",
 	"keywords": [
 		"n8n-nodes-tubelab",
 		"n8n-community-node-package"
 	],
 	"license": "MIT",
-	"homepage": "https://tubelab.ai",
+	"homepage": "https://tubelab.net",
 	"author": {
 		"name": "Antonio Pires dos Santos",
-		"email": "antonio@tubelab.ai"
+		"email": "antonio@tubelab.net"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/YTRank/n8n-nodes-tubelab.git"
+		"url": "https://github.com/antoniojps/n8n-nodes-tubelab.git"
 	},
 	"engines": {
 		"node": ">=20.15"
