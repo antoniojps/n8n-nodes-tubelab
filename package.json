@@ -3,7 +3,8 @@
 	"version": "0.1.0",
 	"description": "n8n node to call TubeLab's API",
 	"keywords": [
-		"n8n-nodes-tubelab"
+		"n8n-nodes-tubelab",
+		"n8n-community-node-package"
 	],
 	"license": "MIT",
 	"homepage": "https://tubelab.ai",
@@ -33,10 +34,11 @@
 	"n8n": {
 		"n8nNodesApiVersion": 1,
 		"credentials": [
-			"dist/credentials/NasaPicsApi.credentials.js"
+			"dist/credentials/TubeLabApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/NasaPics/NasaPics.node.js"
+			"dist/nodes/TubeLab/TubeLab.node.js",
+			"dist/nodes/TubeLab/TubeLabTrigger.node.js"
 		]
 	},
 	"devDependencies": {
