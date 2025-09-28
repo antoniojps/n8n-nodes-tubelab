@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-base.stripeTrigger",
+	"node": "n8n-nodes-base.tubeLabTrigger",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Marketing"],
@@ -12,13 +12,6 @@
 		"primaryDocumentation": [
 			{
 				"url": "https://tubelab.net/docs/api/webhooks"
-			}
-		],
-		"generic": [
-			{
-				"label": "Automate your YouTube research & ideation with TubeLab",
-				"icon": "🚀",
-				"url": "https://tubelab.net/docs/api/automation"
 			}
 		]
 	}
