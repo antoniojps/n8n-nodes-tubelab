@@ -39,6 +39,12 @@ export const postScanFields: INodeProperties[] = [
 				operation: ['postScan'],
 			},
 		},
+		routing: {
+			send: {
+				type: 'body',
+				property: 'findBy',
+			},
+		},
 	},
 	{
 		displayName: 'Query',
