@@ -184,7 +184,6 @@ export const getOutliersFields: INodeProperties[] = [
 					},
 				],
 			},
-
 			{
 				displayName: 'Content Kind (Type)',
 				name: 'type',
@@ -311,6 +310,39 @@ export const getOutliersFields: INodeProperties[] = [
 				type: 'boolean',
 				default: true,
 				description: 'Whether the channel has AdSense enabled or not',
+			},
+			{
+				displayName: 'Published At',
+				name: 'publishedAtFrom',
+				type: 'options',
+				description: "Filter by a videos's upload date",
+				default: '',
+				options: [
+					{
+						name: 'All Time',
+						value: '',
+					},
+					{
+						name: 'Last 3 Months',
+						value: '3months', // Simple identifier
+					},
+					{
+						name: 'Last 6 Months',
+						value: '6months',
+					},
+					{
+						name: 'Last Month',
+						value: '1month',
+					},
+					{
+						name: 'Last Week',
+						value: '1week',
+					},
+					{
+						name: 'Last Year',
+						value: '1year',
+					},
+				],
 			},
 			{
 				displayName: 'Reference ID (Scan)',
@@ -549,7 +581,7 @@ export const getOutliersFields: INodeProperties[] = [
 					averageViewsRatioTo: '={{ $parameter.filters?.averageViewsRatio?.options?.to }}',
 					language: '={{ $parameter.filters?.language }}',
 					publishedAtFrom:
-						'={{ $parameter.filters?.publishedAtFrom === "3months" ? new Date(Date.now() - 3 * 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "6months" ? new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "1month" ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "1year" ? new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000).toISOString() : undefined }}',
+						'={{ $parameter.filters?.publishedAtFrom === "3months" ? new Date(Date.now() - 3 * 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "6months" ? new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "1month" ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "1year" ? new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000).toISOString() : $parameter.filters?.publishedAtFrom === "1week" ? new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() : undefined }}',
 					rpmEstimationFrom: '={{ $parameter.filters?.rpmEstimation?.options?.from }}',
 					rpmEstimationTo: '={{ $parameter.filters?.rpmEstimation?.options?.to }}',
 					revenueEstimationFrom: '={{ $parameter.filters?.revenueEstimation?.options?.from }}',
