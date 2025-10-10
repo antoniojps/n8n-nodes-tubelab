@@ -3,7 +3,7 @@ import languages from './languages.json';
 import { fromField } from './SharedDescription';
 import { validateAndCompileRelatedSearchCollection } from '../utils';
 
-export const getOutliersSortFields: INodeProperties[] = [
+export const searchOutliersSortFields: INodeProperties[] = [
 	{
 		displayName: 'Sort By',
 		name: 'sort',
@@ -57,13 +57,13 @@ export const getOutliersSortFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['getOutliers'],
+				operation: ['searchOutliers'],
 			},
 		},
 	},
 ];
 
-export const getOutliersRelatedSearchFields: INodeProperties[] = [
+export const searchOutliersRelatedSearchFields: INodeProperties[] = [
 	{
 		displayName: 'Similar By',
 		name: 'relatedSearch',
@@ -115,7 +115,7 @@ export const getOutliersRelatedSearchFields: INodeProperties[] = [
 		],
 		displayOptions: {
 			show: {
-				operation: ['getOutliersRelated'],
+				operation: ['searchOutliersRelated'],
 			},
 		},
 		routing: {
@@ -133,7 +133,7 @@ export const getOutliersRelatedSearchFields: INodeProperties[] = [
 	},
 ];
 
-export const getOutliersFields: INodeProperties[] = [
+export const searchOutliersFields: INodeProperties[] = [
 	{
 		displayName: 'Filters',
 		name: 'filters',
@@ -608,7 +608,7 @@ export const getOutliersFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['getOutliers', 'getOutliersRelated'],
+				operation: ['searchOutliers', 'searchOutliersRelated'],
 			},
 		},
 	},

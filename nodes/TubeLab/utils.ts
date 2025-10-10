@@ -49,6 +49,24 @@ export async function validateAndCompileRelatedChannelIds(
 	return requestOptions;
 }
 
+export async function validateAndCompileChannelId(
+	this: IExecuteSingleFunctions,
+	requestOptions: IHttpRequestOptions,
+): Promise<IHttpRequestOptions> {
+	const channelId = this.getNodeParameter('channelId') as string;
+	const { invalid } = validateChannelIds([channelId]);
+
+	if (invalid.length > 0) {
+		throw new NodeOperationError(
+			this.getNode(),
+			'Invalid channel ID found. Please adjust the "Channel ID" parameter and try again. Invalid channel ID: ' +
+				invalid.join(', '),
+		);
+	}
+
+	return requestOptions;
+}
+
 export async function validateAndCompileVideoIds(
 	this: IExecuteSingleFunctions,
 	requestOptions: IHttpRequestOptions,
@@ -60,6 +78,24 @@ export async function validateAndCompileVideoIds(
 		throw new NodeOperationError(
 			this.getNode(),
 			'Invalid video IDs found. Please adjust the "Video IDs" parameter and try again. Invalid video IDs: ' +
+				invalid.join(', '),
+		);
+	}
+
+	return requestOptions;
+}
+
+export async function validateAndCompileVideoId(
+	this: IExecuteSingleFunctions,
+	requestOptions: IHttpRequestOptions,
+): Promise<IHttpRequestOptions> {
+	const videoId = this.getNodeParameter('videoId') as string;
+	const { invalid } = validateVideoIds([videoId]);
+
+	if (invalid.length > 0) {
+		throw new NodeOperationError(
+			this.getNode(),
+			'Invalid video IDs found. Please adjust the "Video ID" parameter and try again. Invalid video IDs: ' +
 				invalid.join(', '),
 		);
 	}

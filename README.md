@@ -69,3 +69,13 @@ Please refer to [TubeLab's Automation documentation](https://tubelab.net/docs/ap
 - 0.2.0 - Fix API base URL
 - 0.1.1 - Fix package.json metadata details
 - 0.1.0 - Initial release
+
+## Contribution Guidelines
+
+Refer to the [official documentation](https://docs.n8n.io/integrations/creating-nodes/build/n8n-node/#new).
+
+Requirements:
+
+- Node JS
+- Install `n8n-node`: `npm install --global @n8n/node-cli`
+- Run `npm run dev`

@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-tubelab",
-	"version": "0.3.3",
+	"version": "0.4.0",
 	"description": "n8n node to call TubeLab's API",
 	"keywords": [
 		"n8n-nodes-tubelab",
@@ -22,7 +22,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "npx rimraf dist && tsc && gulp build:icons",
-		"dev": "tsc --watch",
+		"dev": "n8n-node dev",
 		"format": "prettier nodes credentials --write",
 		"lint": "eslint nodes credentials package.json",
 		"lintfix": "eslint nodes credentials package.json --fix",

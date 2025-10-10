@@ -14,7 +14,7 @@ export const searchFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['getChannels', 'getOutliers'],
+				operation: ['searchChannels', 'searchOutliers'],
 			},
 		},
 		routing: {
@@ -40,7 +40,7 @@ export const sizeFields: INodeProperties[] = [
 			'Number of results to return. Must be between 1 and 40. Combine with `from` to paginate search results.',
 		displayOptions: {
 			show: {
-				resource: ['channel', 'outlier'],
+				resource: ['search'],
 			},
 		},
 		routing: {
@@ -70,6 +70,24 @@ export const postReceivePaginationFields: PostReceiveAction[] = [
 		type: 'rootProperty',
 		properties: {
 			property: 'hits',
+		},
+	},
+];
+
+export const postReceiveYouTubeFields: PostReceiveAction[] = [
+	{
+		type: 'rootProperty',
+		properties: {
+			property: 'items',
+		},
+	},
+];
+
+export const postReceiveChannelFields: PostReceiveAction[] = [
+	{
+		type: 'rootProperty',
+		properties: {
+			property: 'item',
 		},
 	},
 ];
