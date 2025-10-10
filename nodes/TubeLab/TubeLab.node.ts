@@ -1,18 +1,22 @@
 import { INodeType, INodeTypeDescription } from 'n8n-workflow';
-import { API_BASE_URL } from './utils';
+import { API_BASE_URL, validateAndCompileChannelId, validateAndCompileVideoId } from './utils';
 import {
 	postReceivePaginationFields,
 	searchFields,
 	sizeFields,
-	getChannelsFields,
-	getChannelsRelatedSearchFields,
-	getChannelsSortFields,
-	getOutliersFields,
-	getOutliersRelatedSearchFields,
-	getOutliersSortFields,
+	searchChannelsFields,
+	searchChannelsRelatedSearchFields,
+	searchChannelsSortFields,
+	searchOutliersFields,
+	searchOutliersRelatedSearchFields,
+	searchOutliersSortFields,
 	getScanFields,
 	postScanFields,
+	postReceiveYouTubeFields,
+	getChannelFields,
+	postReceiveChannelFields,
 } from './descriptions';
+import { getVideoFields } from './descriptions/VideosDescription';
 
 export class TubeLab implements INodeType {
 	description: INodeTypeDescription = {
@@ -49,19 +53,23 @@ export class TubeLab implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'Search',
+						value: 'search',
+					},
+					{
 						name: 'Channel',
 						value: 'channel',
 					},
 					{
-						name: 'Outlier',
-						value: 'outlier',
+						name: 'Video',
+						value: 'video',
 					},
 					{
 						name: 'Scan',
 						value: 'scan',
 					},
 				],
-				default: 'channel',
+				default: 'search',
 			},
 			{
 				displayName: 'Operation',
@@ -70,65 +78,20 @@ export class TubeLab implements INodeType {
 				noDataExpression: true,
 				displayOptions: {
 					show: {
-						resource: ['outlier'],
+						resource: ['search'],
 					},
 				},
 				options: [
 					{
-						name: 'Search',
-						value: 'getOutliers',
-						action: 'Search for outliers',
-						description:
-							'Search for videos directly from the TubeLab Outliers library with AI enhanced data and 30+ filters. Updated in real-time, 24/7.',
-						routing: {
-							request: {
-								method: 'GET',
-								url: '/v1/outliers',
-							},
-							output: {
-								postReceive: postReceivePaginationFields,
-							},
-						},
-					},
-					{
-						name: 'Similar Search',
-						value: 'getOutliersRelated',
-						action: 'Search for similar outliers',
-						description: 'Search for YouTube outliers with related content to another outlier(s)',
-						routing: {
-							request: {
-								method: 'GET',
-								url: '/v1/outliers/related',
-							},
-							output: {
-								postReceive: postReceivePaginationFields,
-							},
-						},
-					},
-				],
-				default: 'getOutliers',
-			},
-			{
-				displayName: 'Operation',
-				name: 'operation',
-				type: 'options',
-				noDataExpression: true,
-				displayOptions: {
-					show: {
-						resource: ['channel'],
-					},
-				},
-				options: [
-					{
-						name: 'Search',
-						value: 'getChannels',
+						name: 'Search Channels',
+						value: 'searchChannels',
 						action: 'Search for channels',
 						description:
 							'Search for channels directly from the YouTube Niche Finder with AI enhanced data and 30+ filters. Updated in real-time, 24/7.',
 						routing: {
 							request: {
 								method: 'GET',
-								url: '/v1/channels',
+								url: '/v1/search/channels',
 							},
 							output: {
 								postReceive: postReceivePaginationFields,
@@ -136,14 +99,45 @@ export class TubeLab implements INodeType {
 						},
 					},
 					{
-						name: 'Similar Search',
-						value: 'getChannelsRelated',
+						name: 'Search Similar Channels',
+						value: 'searchChannelsRelated',
 						action: 'Search for similar channels',
 						description: 'Search for YouTube channels with related content to another channel',
 						routing: {
 							request: {
 								method: 'GET',
-								url: '/v1/channels/related',
+								url: '/v1/search/channels/related',
+							},
+							output: {
+								postReceive: postReceivePaginationFields,
+							},
+						},
+					},
+					{
+						name: 'Search Outliers',
+						value: 'searchOutliers',
+						action: 'Search for outliers',
+						description:
+							'Search for videos directly from the TubeLab Outliers library with AI enhanced data and 30+ filters. Updated in real-time, 24/7.',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '/v1/search/outliers',
+							},
+							output: {
+								postReceive: postReceivePaginationFields,
+							},
+						},
+					},
+					{
+						name: 'Search Similar Outliers',
+						value: 'searchOutliersRelated',
+						action: 'Search for similar outliers',
+						description: 'Search for YouTube outliers with related content to another outlier(s)',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '/v1/search/outliers/related',
 							},
 							output: {
 								postReceive: postReceivePaginationFields,
@@ -151,7 +145,7 @@ export class TubeLab implements INodeType {
 						},
 					},
 				],
-				default: 'getChannels',
+				default: 'searchOutliers',
 			},
 			{
 				displayName: 'Operation',
@@ -192,16 +186,136 @@ export class TubeLab implements INodeType {
 				],
 				default: 'postScan',
 			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['video'],
+					},
+				},
+				options: [
+					{
+						name: 'Details',
+						value: 'getVideoDetails',
+						action: 'Get details',
+						description: 'Fetch the details of a video',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '=/v1/video/{{$parameter["videoId"]}}',
+							},
+							send: {
+								preSend: [validateAndCompileVideoId],
+							},
+							output: {
+								postReceive: postReceiveYouTubeFields,
+							},
+						},
+					},
+					{
+						name: 'Transcript',
+						value: 'getVideoTranscript',
+						action: 'Get transcript',
+						description: 'Fetches the transcript of a video including timestamps',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '=/v1/video/transcript/{{$parameter["videoId"]}}',
+							},
+							send: {
+								preSend: [validateAndCompileVideoId],
+							},
+							output: {
+								postReceive: postReceiveYouTubeFields,
+							},
+						},
+					},
+					{
+						name: 'Comments',
+						value: 'getVideoComments',
+						action: 'Get comments',
+						description: 'Fetch the first 100 comments of a video',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '=/v1/video/comments/{{$parameter["videoId"]}}',
+							},
+							send: {
+								preSend: [validateAndCompileVideoId],
+							},
+							output: {
+								postReceive: postReceiveYouTubeFields,
+							},
+						},
+					},
+				],
+				default: 'getVideoTranscript',
+			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['channel'],
+					},
+				},
+				options: [
+					{
+						name: 'Get Videos',
+						value: 'getChannelVideos',
+						action: 'Get videos',
+						description: 'Fetch the videos of a channel and relevant metrics',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '=/v1/channel/{{$parameter["channelId"]}}',
+							},
+							send: {
+								preSend: [validateAndCompileChannelId],
+							},
+							output: {
+								postReceive: postReceiveChannelFields,
+							},
+						},
+					},
+					{
+						name: 'Get Shorts',
+						value: 'getChannelShorts',
+						action: 'Get shorts',
+						description: 'Fetches the shorts of a channel and relevant metrics',
+						routing: {
+							request: {
+								method: 'GET',
+								url: '=/v1/channel/shorts/{{$parameter["channelId"]}}',
+							},
+							send: {
+								preSend: [validateAndCompileChannelId],
+							},
+							output: {
+								postReceive: postReceiveChannelFields,
+							},
+						},
+					},
+				],
+				default: 'getChannelVideos',
+			},
 			...searchFields,
-			...getChannelsRelatedSearchFields,
-			...getOutliersRelatedSearchFields,
+			...searchChannelsRelatedSearchFields,
+			...searchOutliersRelatedSearchFields,
 			...sizeFields,
-			...getChannelsFields,
-			...getChannelsSortFields,
-			...getOutliersFields,
-			...getOutliersSortFields,
+			...searchChannelsFields,
+			...searchChannelsSortFields,
+			...searchOutliersFields,
+			...searchOutliersSortFields,
 			...getScanFields,
 			...postScanFields,
+			...getVideoFields,
+			...getChannelFields,
 		],
 	};
 }

@@ -3,7 +3,24 @@ import languages from './languages.json';
 import { fromField } from './SharedDescription';
 import { validateAndCompileRelatedChannelIds } from '../utils';
 
-export const getChannelsSortFields: INodeProperties[] = [
+export const getChannelFields: INodeProperties[] = [
+	{
+		displayName: 'Channel ID',
+		name: 'channelId',
+		type: 'string',
+		placeholder: 'YouTube Channel ID',
+		default: '',
+		description:
+			'The YouTube Channel ID to fetch. Use https://tubelab.ai/video-extractor to get the channel ID.',
+		displayOptions: {
+			show: {
+				operation: ['getChannelVideos', 'getChannelShorts'],
+			},
+		},
+	},
+];
+
+export const searchChannelsSortFields: INodeProperties[] = [
 	{
 		displayName: 'Sort By',
 		name: 'sort',
@@ -67,13 +84,13 @@ export const getChannelsSortFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['getChannels'],
+				operation: ['searchChannels'],
 			},
 		},
 	},
 ];
 
-export const getChannelsRelatedSearchFields: INodeProperties[] = [
+export const searchChannelsRelatedSearchFields: INodeProperties[] = [
 	{
 		displayName: 'Related Channel IDs',
 		name: 'relatedChannelId',
@@ -89,7 +106,7 @@ export const getChannelsRelatedSearchFields: INodeProperties[] = [
 		required: true,
 		displayOptions: {
 			show: {
-				operation: ['getChannelsRelated'],
+				operation: ['searchChannelsRelated'],
 			},
 		},
 		routing: {
@@ -102,7 +119,7 @@ export const getChannelsRelatedSearchFields: INodeProperties[] = [
 	},
 ];
 
-export const getChannelsFields: INodeProperties[] = [
+export const searchChannelsFields: INodeProperties[] = [
 	{
 		displayName: 'Filters',
 		name: 'filters',
@@ -586,7 +603,7 @@ export const getChannelsFields: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['getChannels', 'getChannelsRelated'],
+				operation: ['searchChannels', 'searchChannelsRelated'],
 			},
 		},
 	},
