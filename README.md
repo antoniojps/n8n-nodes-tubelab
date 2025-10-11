@@ -32,6 +32,11 @@ It supports these TubeLab operations:
 - **Search Similar Outliers**: Search for YouTube outliers with related content to another outlier(s)
 - **Search Channels**: Search for channels directly from the YouTube Niche Finder with AI enhanced data and 30+ filters. Updated in real-time, 24/7.
 - **Search Similar Channels**: Search for YouTube channels with related content to another channel
+- **Get Channel Videos**: Fetch the videos of a channel and relevant metrics (max 100 videos)
+- **Get Channel Shorts**: Fetch the shorts of a channel and relevant metrics (max 100 shorts)
+- **Get Video Details**: Fetch the details of a video
+- **Get Video Transcript**: Fetch the transcript & timestamps of a video
+- **Get Video Comments**: Fetch the first 100 comments of a video
 - **Start a Scan**: Start a TubeLab scan to search for fresh outliers and channels on any given topic
 - **Get a Scan**: Get the status of a scan and used inputs
 
@@ -63,7 +68,8 @@ Please refer to [TubeLab's Automation documentation](https://tubelab.net/docs/ap
 
 ## Version history
 
-- 0.3.3 - Fix Start Scan `findBy`input
+- 0.4.0 - Add operations `Get Channel Videos`, `Get Channel Shorts`, `Get Video Details`, `Get Video Transcript`, `Get Video Comments`
+- 0.3.3 - Fix Start Scan `findBy` input
 - 0.3.2 - Add "publishedAtFrom" to Outliers Filters
 - 0.3.0 - Fix Webhooks Trigger
 - 0.2.0 - Fix API base URL
