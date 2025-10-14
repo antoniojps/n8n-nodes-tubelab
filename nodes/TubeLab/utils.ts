@@ -46,7 +46,13 @@ export async function validateAndCompileRelatedChannelIds(
 		);
 	}
 
-	return requestOptions;
+	return {
+		...requestOptions,
+		qs: {
+			...requestOptions.qs,
+			relatedChannelId: channelIds,
+		},
+	};
 }
 
 export async function validateAndCompileChannelId(
@@ -64,7 +70,13 @@ export async function validateAndCompileChannelId(
 		);
 	}
 
-	return requestOptions;
+	return {
+		...requestOptions,
+		qs: {
+			...requestOptions.qs,
+			channelId,
+		},
+	};
 }
 
 export async function validateAndCompileVideoIds(
@@ -82,7 +94,13 @@ export async function validateAndCompileVideoIds(
 		);
 	}
 
-	return requestOptions;
+	return {
+		...requestOptions,
+		qs: {
+			...requestOptions.qs,
+			videoId: videoIds,
+		},
+	};
 }
 
 export async function validateAndCompileVideoId(
@@ -100,7 +118,13 @@ export async function validateAndCompileVideoId(
 		);
 	}
 
-	return requestOptions;
+	return {
+		...requestOptions,
+		qs: {
+			...requestOptions.qs,
+			videoId,
+		},
+	};
 }
 
 export async function validateAndCompileThumbnailVideoId(
@@ -116,7 +140,13 @@ export async function validateAndCompileThumbnailVideoId(
 		);
 	}
 
-	return requestOptions;
+	return {
+		...requestOptions,
+		qs: {
+			...requestOptions.qs,
+			thumbnailVideoId: videoId,
+		},
+	};
 }
 
 export async function validateAndCompileRelatedSearchCollection(
@@ -130,11 +160,11 @@ export async function validateAndCompileRelatedSearchCollection(
 	};
 
 	// Check if at least one field is provided
-	const hasVideoIds = relatedSearch.videoId && relatedSearch.videoId.length > 0;
+	const hasVideoIds = relatedSearch?.videoId && relatedSearch?.videoId?.length > 0;
 	const hasThumbnailVideoId =
-		relatedSearch.thumbnailVideoId && relatedSearch.thumbnailVideoId.trim() !== '';
+		relatedSearch?.thumbnailVideoId && relatedSearch?.thumbnailVideoId?.trim() !== '';
 	const hasRelatedChannelIds =
-		relatedSearch.relatedChannelId && relatedSearch.relatedChannelId.length > 0;
+		relatedSearch?.relatedChannelId && relatedSearch?.relatedChannelId?.length > 0;
 
 	if (!hasVideoIds && !hasThumbnailVideoId && !hasRelatedChannelIds) {
 		throw new NodeOperationError(
@@ -175,7 +205,13 @@ export async function validateAndCompileRelatedSearchCollection(
 		}
 	}
 
-	return requestOptions;
+	return {
+		...requestOptions,
+		qs: {
+			...requestOptions.qs,
+			...relatedSearch,
+		},
+	};
 }
 
 export async function validateAndCompileScanChannelIds(
@@ -193,7 +229,13 @@ export async function validateAndCompileScanChannelIds(
 		);
 	}
 
-	return requestOptions;
+	return {
+		...requestOptions,
+		qs: {
+			...requestOptions.qs,
+			channelIds,
+		},
+	};
 }
 
 /**
