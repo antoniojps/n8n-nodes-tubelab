@@ -110,6 +110,10 @@ export const postScanFields: INodeProperties[] = [
 				name: 'Standard',
 				value: 'standard',
 			},
+			{
+				name: 'Test',
+				value: 'test',
+			},
 		],
 		displayOptions: {
 			show: {
