@@ -55,30 +55,6 @@ export async function validateAndCompileRelatedChannelIds(
 	};
 }
 
-export async function validateAndCompileChannelId(
-	this: IExecuteSingleFunctions,
-	requestOptions: IHttpRequestOptions,
-): Promise<IHttpRequestOptions> {
-	const channelId = this.getNodeParameter('channelId') as string;
-	const { invalid } = validateChannelIds([channelId]);
-
-	if (invalid.length > 0) {
-		throw new NodeOperationError(
-			this.getNode(),
-			'Invalid channel ID found. Please adjust the "Channel ID" parameter and try again. Invalid channel ID: ' +
-				invalid.join(', '),
-		);
-	}
-
-	return {
-		...requestOptions,
-		qs: {
-			...requestOptions.qs,
-			channelId,
-		},
-	};
-}
-
 export async function validateAndCompileVideoIds(
 	this: IExecuteSingleFunctions,
 	requestOptions: IHttpRequestOptions,

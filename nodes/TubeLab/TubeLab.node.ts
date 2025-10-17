@@ -1,5 +1,5 @@
 import { INodeType, INodeTypeDescription } from 'n8n-workflow';
-import { API_BASE_URL, validateAndCompileChannelId, validateAndCompileVideoId } from './utils';
+import { API_BASE_URL, validateAndCompileVideoId } from './utils';
 import {
 	postReceivePaginationFields,
 	searchFields,
@@ -275,9 +275,6 @@ export class TubeLab implements INodeType {
 								method: 'GET',
 								url: '=/v1/channel/videos/{{$parameter["channelId"]}}',
 							},
-							send: {
-								preSend: [validateAndCompileChannelId],
-							},
 							output: {
 								postReceive: postReceiveChannelFields,
 							},
@@ -292,9 +289,6 @@ export class TubeLab implements INodeType {
 							request: {
 								method: 'GET',
 								url: '=/v1/channel/shorts/{{$parameter["channelId"]}}',
-							},
-							send: {
-								preSend: [validateAndCompileChannelId],
 							},
 							output: {
 								postReceive: postReceiveChannelFields,
