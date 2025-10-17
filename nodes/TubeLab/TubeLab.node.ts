@@ -273,7 +273,7 @@ export class TubeLab implements INodeType {
 						routing: {
 							request: {
 								method: 'GET',
-								url: '=/v1/channel/{{$parameter["channelId"]}}',
+								url: '=/v1/channel/videos/{{$parameter["channelId"]}}',
 							},
 							send: {
 								preSend: [validateAndCompileChannelId],
