@@ -237,5 +237,5 @@ export async function tubeLabApiRequest(
 		delete options.qs;
 	}
 
-	return await this.helpers.requestWithAuthentication.call(this, 'tubeLabApi', options);
+	return await this.helpers.httpRequestWithAuthentication.call(this, 'tubeLabApi', options);
 }

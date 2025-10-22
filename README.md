@@ -68,11 +68,11 @@ Please refer to [TubeLab's Automation documentation](https://tubelab.net/docs/ap
 
 ## Version history
 
+- 0.4.7 - Remove deprecated `requestWithAuthentication` in favor of `httpRequestWithAuthentication`
 - 0.4.5 - Fix `/channel/videos` endpoint
 - 0.4.3 - Fix query params as expressions compiling
 - 0.4.0 - Add operations `Get Channel Videos`, `Get Channel Shorts`, `Get Video Details`, `Get Video Transcript`, `Get Video Comments`
 - 0.3.3 - Fix Start Scan `findBy` input
-  > > > > > > > master
 - 0.3.2 - Add "publishedAtFrom" to Outliers Filters
 - 0.3.0 - Fix Webhooks Trigger
 - 0.2.0 - Fix API base URL
