@@ -14,15 +14,9 @@ This is an n8n community node. It lets you get enhanced YouTube data - including
 
 ## Installation
 
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
+**TubeLab** n8n node is now officially supported in n8n!
 
-1. Go to **Settings > Community Nodes**.
-2. Select **Install**.
-3. Enter `n8n-nodes-tubelab` in **Enter npm package name**.
-4. Agree to the risks of using community nodes: select **I understand the risks of installing unverified code from a public source.**
-5. Select **Install**.
-
-After installing the node, you can use it like any other node. n8n displays the node in search results in the **Nodes** panel.
+Simply create a new node, search for "TubeLab" and install.
 
 ## Operations
 
